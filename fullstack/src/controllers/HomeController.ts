@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'; 
-
+import { books } from '../data/books.js';
 
 export class HomeController { 
     static index(req: Request, res: Response): void { 
@@ -18,6 +18,12 @@ export class HomeController {
         viewData["title"] = "Contact";
         res.render('home/contact', { viewData: viewData });
     }
+    static Main_Point(req: Request, res: any) { 
+    const viewData: any = {}; 
+     viewData["books"] = books; 
+    res.render('home/books', viewData); 
+
+  } 
 } 
 
  
