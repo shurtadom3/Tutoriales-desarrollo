@@ -6,5 +6,4 @@ export class Book {
     public price: number, 
     public stock: number 
   ) { } 
-
 } 

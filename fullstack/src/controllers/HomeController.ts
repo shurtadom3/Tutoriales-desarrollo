@@ -29,7 +29,6 @@ export class HomeController {
   }
 
 static books_info(req: Request, res: Response): void {
-
     const id = Number(req.params.id);
     try {
         const book = BookManager.findById(books, id);
@@ -37,7 +36,6 @@ static books_info(req: Request, res: Response): void {
         viewData["title"] = book.title;
         viewData["book"] = book;
         res.render("home/book_info", { viewData: viewData });
-
     } catch {
         res.status(404).send("Book not found");
     }
