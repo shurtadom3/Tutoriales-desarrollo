@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'; 
 import { books } from '../data/Books.js';
-import { BookManager } from '../data/BookManager.js';
+import { BookManager } from '../models/BookRepository.js';
 
 export class HomeController { 
     static index(req: Request, res: Response): void { 

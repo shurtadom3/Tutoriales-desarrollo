@@ -1,4 +1,4 @@
- import { Book } from '../models/Book.js';
+ import { Book } from './Book.js';
 
  export class BookManager { 
    public static findById(books: Book[], id: number): Book { 
