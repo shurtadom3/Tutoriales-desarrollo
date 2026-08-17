@@ -1,5 +1,6 @@
 <script setup lang="ts"> 
-import { books } from '@/data/books.js';
+import { BookService } from '@/services/BookService.js'; 
+const books = BookService.getBooks(); 
 </script> 
 
 <template> 
