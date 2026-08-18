@@ -1,6 +1,10 @@
 <script setup lang="ts"> 
 import { BookService } from '@/services/BookService.js'; 
 const books = BookService.getBooks(); 
+
+function deleteBook() {
+  BookService.deleteBook();
+}
 </script> 
 
 <template> 
@@ -12,7 +16,13 @@ const books = BookService.getBooks();
           class="inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded hover:bg-blue-700 transition" 
           >+ Add Book</RouterLink 
         > 
-      </div> 
+              <button
+          @click="deleteBook"
+          class="inline-block bg-red-600 text-white font-semibold px-5 py-2 rounded hover:bg-red-700 transition"
+        >
+          Delete Last Book
+        </button>
+    </div> 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> 
         <div v-for="book in books" :key="book.id"> 
           <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 p-6 border border-gray-200" 
