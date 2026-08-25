@@ -1,6 +1,7 @@
 <script setup lang="ts"> 
 import { computed, ref } from 'vue'; 
 import { ReviewService } from '@/services/ReviewService.js'; 
+import { formatDate } from '@/utils/formatDate.js';
 
 const props = defineProps<{ 
   bookId: number; 
@@ -18,7 +19,7 @@ function submitReview() {
   isSubmitting.value = true; 
   ReviewService.createReview({ 
     bookId: props.bookId, 
-    rating: Math.min(5, Math.max(1, form.value.rating)), 
+    rating:form.value.rating,
     comment: form.value.comment.trim(), 
     author: form.value.author.trim() || undefined, 
   }); 
@@ -26,14 +27,6 @@ function submitReview() {
   isSubmitting.value = false; 
 } 
 
-function formatDate(iso?: string): string { 
-  if (!iso) return ''; 
-  return new Date(iso).toLocaleDateString('es-CO', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: 'numeric', 
-  }); 
-} 
 
 </script> 
 <template> 
