@@ -4,5 +4,5 @@ export interface ReviewInterface {
   rating: number; 
   comment: string; 
   author?: string; 
-  createdAt?: string; 
+  createdAt: string; 
 } 
