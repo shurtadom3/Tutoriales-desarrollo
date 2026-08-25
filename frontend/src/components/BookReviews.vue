@@ -56,7 +56,8 @@ function submitReview() {
             class="w-full border border-gray-300 rounded py-2 px-3 focus:outline-none focus:ring focus:border-blue-300" 
             placeholder="Write your review..." 
             required 
-          /> 
+          ></textarea>
+
         </div> 
         <div> 
           <label for="author" class="block text-sm text-gray-600 mb-1">Your name (optional)</label> 
@@ -91,7 +92,7 @@ function submitReview() {
           </span> 
         </div> 
         <p class="text-gray-600 text-sm whitespace-pre-wrap">{{ review.comment }}</p> 
-        <p v-if="review.createdAt" class="text-gray-400 text-xs mt-2"> 
+        <p class="text-gray-400 text-xs mt-2"> 
           {{ formatDate(review.createdAt) }} 
         </p> 
       </li> 
