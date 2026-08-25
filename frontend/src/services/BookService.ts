@@ -10,14 +10,29 @@ export class BookService {
     return useBookStore().books.find((book) => book.id === id); 
   } 
 
-  static createBook(book: CreateBookDTO): void { 
-    const id = useBookStore().books.length + 1; 
-    useBookStore().books.push({ id, ...book }); 
-  } 
-  static deleteBook(): void {
+  static createBook(book: CreateBookDTO): void {
+    const books = useBookStore().books;
+    const nextId =
+      books.length > 0
+        ? Math.max(...books.map((book) => book.id)) + 1
+        : 1;
+
+      books.push({
+        id: nextId,
+        ...book,
+  });
+}
+
+  static deleteLastBook(): void {
     const books = useBookStore().books;
         if (books.length > 0) {
             books.pop();
   }
 }
+  static getUniqueBookCategories(): string[] { 
+    const books = BookService.getBooks(); 
+    const categories = books.map((book) => book.category); 
+    const uniqueCategories = new Set(categories); 
+    return Array.from(uniqueCategories); 
+  } 
 } 
