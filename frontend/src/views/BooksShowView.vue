@@ -9,7 +9,6 @@ const bookId = Number(route.params.id);
 const book = BookService.getBookById(bookId); 
 
 </script> 
-
 <template> 
   <section v-if="book"> 
     <div class="max-w-7xl mx-auto"> 
