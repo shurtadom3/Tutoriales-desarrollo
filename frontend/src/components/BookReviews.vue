@@ -1,12 +1,13 @@
 <script setup lang="ts"> 
-import { computed, ref } from 'vue'; 
+import { onMounted, ref } from 'vue'; 
 import { ReviewService } from '@/services/ReviewService.js'; 
-import { formatDate } from '@/utils/formatDate.js';
+import type { ReviewInterface } from '@/interfaces/ReviewInterface.js'; 
 
 const props = defineProps<{ 
   bookId: number; 
 }>(); 
-const reviews = computed(() => ReviewService.getReviewsByBookId(props.bookId)); 
+
+const reviews = ref<ReviewInterface[]>([]); 
 const form = ref({ 
   rating: 5, 
   comment: '', 
@@ -14,21 +15,38 @@ const form = ref({
 }); 
 
 const isSubmitting = ref(false); 
-function submitReview() { 
+async function submitReview() { 
   if (!form.value.comment.trim()) return; 
   isSubmitting.value = true; 
-  ReviewService.createReview({ 
+
+  await ReviewService.createReview({ 
     bookId: props.bookId, 
-    rating:form.value.rating,
+    rating: Math.min(5, Math.max(1, form.value.rating)), 
     comment: form.value.comment.trim(), 
     author: form.value.author.trim() || undefined, 
   }); 
   form.value = { rating: 5, comment: '', author: '' }; 
   isSubmitting.value = false; 
+  getReviews(); 
 } 
 
+function formatDate(iso?: string): string { 
+  if (!iso) return ''; 
+  return new Date(iso).toLocaleDateString('es-CO', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric', 
+  }); 
+} 
 
+async function getReviews() { 
+  reviews.value = await ReviewService.getReviewsByBookId(props.bookId); 
+} 
+onMounted(() => { 
+  getReviews(); 
+}); 
 </script> 
+
 <template> 
   <div class="space-y-6"> 
     <h3 class="text-lg font-semibold text-gray-800">Reviews</h3> 
@@ -56,8 +74,7 @@ function submitReview() {
             class="w-full border border-gray-300 rounded py-2 px-3 focus:outline-none focus:ring focus:border-blue-300" 
             placeholder="Write your review..." 
             required 
-          ></textarea>
-
+          /> 
         </div> 
         <div> 
           <label for="author" class="block text-sm text-gray-600 mb-1">Your name (optional)</label> 
@@ -78,6 +95,7 @@ function submitReview() {
         </button> 
       </form> 
     </div> 
+
     <!-- Review list --> 
     <ul class="space-y-4"> 
       <li 
@@ -92,7 +110,7 @@ function submitReview() {
           </span> 
         </div> 
         <p class="text-gray-600 text-sm whitespace-pre-wrap">{{ review.comment }}</p> 
-        <p class="text-gray-400 text-xs mt-2"> 
+        <p v-if="review.createdAt" class="text-gray-400 text-xs mt-2"> 
           {{ formatDate(review.createdAt) }} 
         </p> 
       </li> 
@@ -102,5 +120,3 @@ function submitReview() {
     </ul> 
   </div> 
 </template> 
-
- 
